@@ -85,19 +85,18 @@ MedSwift Logistics Ltd. transports temperature-sensitive biologics and vaccines 
 ## Architecture & Technology Stack
 
 ### Frontend
-- **Dispatcher Dashboard & Audit Portal:** React + TypeScript
-- **Driver PWA:** Mobile-first Progressive Web App with offline support (IndexedDB/LocalStorage)
+- **Dispatcher Dashboard & Audit Portal:** NEXTjS + TypeScript
 - **State Management:** Redux or Zustand for efficient state updates
 
 ### Backend
 - **API:** REST or GraphQL
 - **Authentication:** JWT-based RBAC
-- **Database:** PostgreSQL or SQLite with normalized schema
-- **IoT Simulator:** Simulated telemetry data stream (temp/humidity every 30s)
+- **Database:** PostgreSQL
+
 
 ### DevOps & Deployment
 - **Frontend Hosting:** Vercel
-- **Backend Hosting:** Vercel Serverless Functions or Streamlit
+- **Backend Hosting:** Vercel Serverless Functions
 - **CI/CD:** Automated pipelines for testing and deployment
 
 ---
