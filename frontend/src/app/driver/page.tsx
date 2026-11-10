@@ -12,7 +12,7 @@ import { CriticalTakeover } from '@/features/alerts/CriticalTakeover';
 import { api, readingOutboxPayload } from '@/lib/api/client';
 import { usePolling, useNow } from '@/lib/hooks';
 import { useOutbox } from '@/lib/offline/useOutbox';
-import { uuid } from '@/lib/uuid';
+import { generateUUID } from '@/lib/uuid';
 import { formatTime } from '@/lib/format';
 
 function Driver() {
@@ -32,8 +32,9 @@ function Driver() {
     const tempC = Number(manual);
     if (!s || manual.trim() === '' || Number.isNaN(tempC)) return;
     const recordedAt = new Date().toISOString();
-    const payload = readingOutboxPayload({ readingId: uuid(), shipmentId: s.id, tempC, recordedAt });
-    await outbox.enqueue({ clientUuid: uuid(), ...payload, occurredAt: recordedAt, label: `Reading ${tempC.toFixed(1)} °C` });
+    const readingId = generateUUID();
+    const payload = readingOutboxPayload({ readingId, shipmentId: s.id, tempC, recordedAt });
+    await outbox.enqueue({ clientUuid: readingId, ...payload, occurredAt: recordedAt, label: `Reading ${tempC.toFixed(1)} °C` });
     setManual('');
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);

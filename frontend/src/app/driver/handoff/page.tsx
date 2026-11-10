@@ -13,7 +13,7 @@ import { ConditionPicker } from '@/features/handoff/ConditionPicker';
 import { api, handoffOutboxPayload } from '@/lib/api/client';
 import { usePolling } from '@/lib/hooks';
 import { useOutbox } from '@/lib/offline/useOutbox';
-import { uuid } from '@/lib/uuid';
+import { generateUUID } from '@/lib/uuid';
 import type { Condition, HandoffType } from '@/types/domain';
 
 type Step = 'scan' | 'pin' | 'condition' | 'done';
@@ -30,7 +30,7 @@ function Flow() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   // One id per handoff attempt, so a retry or double-tap is deduplicated by the server.
-  const [clientUuid] = useState(() => uuid());
+  const [clientUuid] = useState(() => generateUUID());
 
   const s = ship.data;
   const type: HandoffType = s?.status === 'IN_TRANSIT' ? 'DELIVERY' : 'PICKUP';
