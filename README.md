@@ -161,7 +161,7 @@ MedSwift Logistics Ltd. transports temperature-sensitive biologics and vaccines 
 
 1. Clone the repository:
 ```bash
-git clone <https://github.com/nur21horin/ColdChain_Pulse_Capstone.git>
+git clone https://github.com/nur21horin/ColdChain_Pulse_Capstone.git
 cd ColdChain_Pulse_Capstone
 ```
 
