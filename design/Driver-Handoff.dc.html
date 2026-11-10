@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Driver delivery handoff</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0A6A94}a:hover{color:#074E6E}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3F5F8; font-family: Inter, system-ui, sans-serif; color: #0F1B2A; display: flex; flex-direction: column; overflow: hidden">
+
+  <div role="status" style="background: #0F1B2A; color: #FFFFFF; padding: 8px 20px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFD166" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M7 18h10a4 4 0 001.4-7.7A6 6 0 008.2 7.6"/></svg>
+    Offline · this handoff will be saved on the phone
+  </div>
+
+  <header style="display: flex; align-items: center; gap: 8px; padding: 10px 12px 6px">
+    <a href="Driver-Home.dc.html" aria-label="Back" style="width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; color: #0F1B2A"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div style="flex: 1">
+      <h1 style="margin: 0; font-size: 20px; font-weight: 800">Delivery handoff</h1>
+      <div style="font-size: 13px; color: #4A5868">Step 2 of 2 · Kapasia UHC</div>
+    </div>
+  </header>
+
+  <main style="flex: 1; padding: 6px 20px 16px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; gap: 12px; background: #E5F3EC; border-radius: 14px; padding: 12px 14px">
+      <span style="width: 32px; height: 32px; border-radius: 50%; background: #17694F; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+      <div style="font-size: 15px"><strong>QR matches SHP-0204</strong><div style="font-size: 13px; color: #3D4B5C">BCG vaccine · 23.981, 90.493</div></div>
+    </div>
+
+    <fieldset style="border: 0; margin: 0; padding: 0">
+      <legend style="font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: #3D4B5C; margin-bottom: 8px; padding: 0">CONDITION ON ARRIVAL</legend>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{conditions}}" as="c" hint-placeholder-count="3">
+          <button type="button" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}" style="{{c.style}}">{{c.label}}</button>
+        </sc-for>
+      </div>
+    </fieldset>
+
+    <div>
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: #3D4B5C; margin-bottom: 8px">DRIVER PIN</div>
+      <div aria-label="PIN entry, {{pinCount}} of 4 digits" style="display: flex; justify-content: center; gap: 18px; padding: 8px 0">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
+          <span style="{{d.style}}"></span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{keys}}" as="k" hint-placeholder-count="12">
+        <button type="button" aria-label="{{k.aria}}" onClick="{{k.press}}" style="{{k.style}}">{{k.label}}</button>
+      </sc-for>
+    </div>
+
+    <button type="button" onClick="{{confirm}}" style="{{confirmStyle}}">{{confirmLabel}}</button>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pin: '12', cond: 'ok', saved: false };
+  }
+  renderVals() {
+    const { pin, cond, saved } = this.state;
+    const base = 'font: inherit; min-height: 56px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer;';
+    const condDefs = [
+      { id: 'ok', label: 'OK', on: 'background:#17694F;color:#FFFFFF;border:2px solid #17694F' },
+      { id: 'suspect', label: 'Temp suspect', on: 'background:#F0A500;color:#0F1B2A;border:2px solid #B07A00' },
+      { id: 'damaged', label: 'Damaged', on: 'background:#B42318;color:#FFFFFF;border:2px solid #B42318' }
+    ];
+    const conditions = condDefs.map((c) => ({
+      label: c.label,
+      pressed: cond === c.id ? 'true' : 'false',
+      style: base + (cond === c.id ? c.on : 'background:#FFFFFF;color:#0F1B2A;border:2px solid #C9D2DC'),
+      pick: () => this.setState({ cond: c.id, saved: false })
+    }));
+    const dots = [0, 1, 2, 3].map((i) => ({
+      style: i < pin.length
+        ? 'width:18px;height:18px;border-radius:50%;background:#0F1B2A'
+        : 'width:18px;height:18px;border-radius:50%;border:2px solid #8995A3;box-sizing:border-box'
+    }));
+    const keyStyle = 'font: inherit; height: 56px; border-radius: 12px; background: #FFFFFF; border: 1px solid #C9D2DC; color: #0F1B2A; font-family: \'JetBrains Mono\', monospace; font-size: 24px; font-weight: 700; cursor: pointer';
+    const press = (d) => () => { if (this.state.pin.length < 4) this.setState({ pin: this.state.pin + d, saved: false }); };
+    const keys = ['1','2','3','4','5','6','7','8','9'].map((d) => ({ label: d, aria: d, style: keyStyle, press: press(d) }));
+    keys.push({ label: 'Clear', aria: 'Clear PIN', style: keyStyle + '; font-family: Inter, sans-serif; font-size: 15px', press: () => this.setState({ pin: '', saved: false }) });
+    keys.push({ label: '0', aria: '0', style: keyStyle, press: press('0') });
+    keys.push({ label: '⌫', aria: 'Delete last digit', style: keyStyle, press: () => this.setState({ pin: this.state.pin.slice(0, -1), saved: false }) });
+    const ready = pin.length === 4;
+    return {
+      conditions, dots, keys,
+      pinCount: pin.length,
+      confirmLabel: saved ? 'Saved — will sync when online' : ready ? 'Confirm delivery' : 'Enter 4-digit PIN',
+      confirmStyle: 'font: inherit; min-height: 64px; border-radius: 16px; border: 0; font-weight: 800; font-size: 18px; cursor: pointer; ' +
+        (saved ? 'background:#17694F;color:#FFFFFF' : ready ? 'background:#0A6A94;color:#FFFFFF' : 'background:#DCE2E9;color:#3D4B5C'),
+      confirm: () => { if (this.state.pin.length === 4) this.setState({ saved: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

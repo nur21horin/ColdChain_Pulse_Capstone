@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design system and TypeScript handoff</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0A6A94}a:hover{color:#074E6E}
+</style>
+</helmet>
+<div style="width: 1440px; min-height: 1800px; box-sizing: border-box; padding: 56px; background: #F3F5F8; font-family: Inter, system-ui, sans-serif; color: #0F1B2A; display: flex; flex-direction: column; gap: 32px">
+
+  <header>
+    <h1 style="margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.02em">ColdChain Pulse UI kit</h1>
+    <p style="margin: 8px 0 0; font-size: 16px; color: #4A5868">Tokens, components and states for the Next.js + TypeScript front end. Code names match what the components are called in the repo.</p>
+  </header>
+
+  <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px">
+    <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">Color tokens</h2>
+    <p style="margin: 0 0 20px; font-size: 14px; color: #4A5868">Status colors differ in lightness as well as hue, and always come with an icon and a word.</p>
+    <div style="display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 16px">
+      <div><div style="height: 72px; border-radius: 10px; background: #0F1B2A"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Ink</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#0F1B2A<br>color.ink</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #3D4B5C"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Slate</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#3D4B5C<br>color.slate</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #F3F5F8; border: 1px solid #DCE2E9"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Canvas</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#F3F5F8<br>color.canvas</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #DCE2E9"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Border</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#DCE2E9<br>color.border</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #0A6A94"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Brand</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#0A6A94<br>color.brand</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #B42318"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Critical</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#B42318<br>status.critical</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #F0A500"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Warning</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#F0A500<br>status.warning</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #17694F"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Normal</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#17694F<br>status.normal</div></div>
+      <div><div style="height: 72px; border-radius: 10px; background: #EEF1F4; border: 2px dashed #8995A3; box-sizing: border-box"></div><div style="font-size: 13px; font-weight: 700; margin-top: 8px">Stale</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868">#8995A3<br>status.stale</div></div>
+    </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+    <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px">
+      <h2 style="margin: 0 0 20px; font-size: 18px; font-weight: 700">Type</h2>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868; width: 120px; flex: none">display · 28/700</span><span style="font-size: 28px; font-weight: 700; letter-spacing: -0.02em">Live board</span></div>
+        <div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868; width: 120px; flex: none">heading · 16/700</span><span style="font-size: 16px; font-weight: 700">Custody &amp; alert log</span></div>
+        <div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868; width: 120px; flex: none">body · 14/400</span><span style="font-size: 14px">Tejgaon Central Warehouse → Kapasia UHC</span></div>
+        <div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868; width: 120px; flex: none">label · 12/600</span><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">TEMPERATURE · LAST 60 MIN</span></div>
+        <div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4A5868; width: 120px; flex: none">reading · mono</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 44px; font-weight: 600; line-height: 1">4.4<span style="font-size: 22px"> °C</span></span></div>
+        <p style="margin: 4px 0 0; font-size: 13px; color: #4A5868">Inter for UI. JetBrains Mono for every temperature, ID, time and hash so digits line up in tables.</p>
+      </div>
+    </section>
+
+    <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 22px">
+      <div>
+        <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">AlertBadge</h2>
+        <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3D4B5C">level: 'CRITICAL' | 'WARNING' | 'NORMAL' | 'STALE'</code>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px">
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #B42318; color: #FFFFFF; font-weight: 600; font-size: 12px; letter-spacing: 0.03em"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/></svg>CRITICAL</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #F0A500; color: #0F1B2A; font-weight: 600; font-size: 12px; letter-spacing: 0.03em"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>WARNING</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #E5F3EC; color: #17694F; font-weight: 600; font-size: 12px; letter-spacing: 0.03em"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>NORMAL</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: #EEF1F4; color: #3D4B5C; border: 1px dashed #8995A3; font-weight: 600; font-size: 12px; letter-spacing: 0.03em"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M4 12h3M10 12h4M17 12h3"/></svg>STALE</span>
+        </div>
+      </div>
+      <div>
+        <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">TempReadout</h2>
+        <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3D4B5C">value: number; min: number; max: number; size: 'sm' | 'lg' | 'xl'</code>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px">
+          <div style="background: #E5F3EC; border-radius: 12px; padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 32px; line-height: 1">4.4<span style="font-size: 16px"> °C</span></div>
+          <div style="background: #FFF5DB; border-radius: 12px; padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 32px; line-height: 1; color: #7A4F00">7.7<span style="font-size: 16px"> °C</span></div>
+          <div style="background: #FDEDEB; border-radius: 12px; padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 32px; line-height: 1; color: #B42318">9.4<span style="font-size: 16px"> °C</span></div>
+          <div style="background: #EEF1F4; border: 1px dashed #8995A3; border-radius: 12px; padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 32px; line-height: 1; color: #5B6878">--.-<span style="font-size: 16px"> °C</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+    <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px">
+      <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">Button</h2>
+      <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3D4B5C">variant: 'primary' | 'secondary' | 'danger'; size: 'md' | 'driver'</code>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; align-items: center">
+        <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #0A6A94; color: #FFFFFF; border: 0; border-radius: 8px; padding: 0 18px; min-height: 44px">Primary</button>
+        <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #FFFFFF; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 18px; min-height: 44px">Secondary</button>
+        <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #B42318; color: #FFFFFF; border: 0; border-radius: 8px; padding: 0 18px; min-height: 44px">Acknowledge</button>
+        <button type="button" disabled style="font: inherit; font-size: 14px; font-weight: 600; background: #DCE2E9; color: #3D4B5C; border: 0; border-radius: 8px; padding: 0 18px; min-height: 44px">Disabled</button>
+      </div>
+      <button type="button" style="font: inherit; width: 100%; margin-top: 16px; min-height: 72px; border-radius: 16px; background: #0A6A94; color: #FFFFFF; border: 0; font-weight: 700; font-size: 20px">Driver size · 72 px, glove-friendly</button>
+      <p style="margin: 12px 0 0; font-size: 13px; color: #4A5868">Desktop targets ≥ 44 px. Driver targets ≥ 56 px, main action 72 px.</p>
+    </section>
+
+    <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px">
+      <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">ConnectionBanner</h2>
+      <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3D4B5C">status: 'online' | 'offline' | 'syncing'; pending: number</code>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 16px">
+        <div style="background: #0F1B2A; color: #FFFFFF; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD166" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M7 18h10a4 4 0 001.4-7.7A6 6 0 008.2 7.6"/></svg><strong>Offline</strong><span style="color: #C5D0DC">2 items saved · will sync</span></div>
+        <div style="background: #E3F1F8; color: #074E6E; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#074E6E" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M20 12a8 8 0 01-14 5.3M4 12a8 8 0 0114-5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg><strong>Syncing</strong><span>1 of 2 sent</span></div>
+        <div style="background: #E5F3EC; color: #17694F; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17694F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><strong>Online</strong><span>All handoffs synced</span></div>
+        <div style="background: #FDEDEB; color: #8F1D13; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8F1D13" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg><strong>Needs attention</strong><span>1 handoff rejected · wrong PIN</span></div>
+      </div>
+    </section>
+  </div>
+
+  <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px">
+    <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">DataState</h2>
+    <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3D4B5C">state: 'loading' | 'empty' | 'error' | 'offline' — wraps every list, table and chart</code>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 16px">
+      <div style="border: 1px solid #DCE2E9; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px; min-height: 150px; box-sizing: border-box">
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">LOADING</div>
+        <div style="height: 12px; border-radius: 6px; background: #E6EAF0; width: 80%"></div>
+        <div style="height: 12px; border-radius: 6px; background: #E6EAF0; width: 60%"></div>
+        <div style="height: 12px; border-radius: 6px; background: #E6EAF0; width: 70%"></div>
+        <div style="height: 12px; border-radius: 6px; background: #E6EAF0; width: 45%"></div>
+      </div>
+      <div style="border: 1px solid #DCE2E9; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">EMPTY</div>
+        <div style="font-size: 15px; font-weight: 700">No active shipments</div>
+        <div style="font-size: 13px; color: #4A5868">Create one to start tracking.</div>
+        <button type="button" style="font: inherit; font-size: 13px; font-weight: 600; background: #0A6A94; color: #FFFFFF; border: 0; border-radius: 8px; min-height: 40px; margin-top: auto">New shipment</button>
+      </div>
+      <div style="border: 1px solid #F2B8B0; background: #FDEDEB; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #8F1D13">ERROR</div>
+        <div style="font-size: 15px; font-weight: 700; color: #8F1D13">Couldn't load shipments</div>
+        <div style="font-size: 13px; color: #8F1D13">Server returned 503. Showing data from 10:42.</div>
+        <button type="button" style="font: inherit; font-size: 13px; font-weight: 600; background: #FFFFFF; color: #8F1D13; border: 1px solid #F2B8B0; border-radius: 8px; min-height: 40px; margin-top: auto">Try again</button>
+      </div>
+      <div style="border: 1px dashed #8995A3; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-height: 150px; box-sizing: border-box">
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">OFFLINE</div>
+        <div style="font-size: 15px; font-weight: 700">Showing saved copy</div>
+        <div style="font-size: 13px; color: #4A5868">Last updated 08:41. New entries are saved on this device.</div>
+      </div>
+    </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+    <section style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 16px; padding: 28px">
+      <h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 700">IntegrityResult</h2>
+      <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3D4B5C">valid: boolean; brokenAt?: string; finalHash: string</code>
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px">
+        <div style="display: flex; gap: 12px; align-items: center; border: 1px solid #DCE2E9; border-radius: 12px; padding: 14px 16px">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: #E5F3EC; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17694F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+          <div><div style="font-weight: 700; color: #17694F">Hash chain intact</div><div style="font-size: 13px; color: #4A5868">761 records · <span style="font-family: 'JetBrains Mono', monospace">9f2c71a0…be41a</span></div></div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center; border: 2px solid #B42318; background: #FDEDEB; border-radius: 12px; padding: 14px 16px">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: #B42318; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+          <div><div style="font-weight: 700; color: #8F1D13">Tampering detected</div><div style="font-size: 13px; color: #8F1D13">Chain breaks at row 214 · reading 10:58:30</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="background: #0F1B2A; color: #E6EAF0; border-radius: 16px; padding: 28px">
+      <h2 style="margin: 0 0 14px; font-size: 18px; font-weight: 700; color: #FFFFFF">Where it lives in the repo</h2>
+      <pre style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; white-space: pre; overflow-x: auto; color: #C5D0DC">src/
+  app/
+    (auth)/login/page.tsx
+    (dispatcher)/board/page.tsx
+    (audit)/reports/[id]/page.tsx
+    (driver)/page.tsx · handoff/page.tsx
+  components/ui/
+    AlertBadge.tsx · TempReadout.tsx
+    Button.tsx · ConnectionBanner.tsx
+    DataState.tsx · IntegrityResult.tsx
+  features/
+    shipments/ShipmentTable.tsx
+    telemetry/TempChart.tsx · Sparkline.tsx
+    handoff/PinPad.tsx · QrScanner.tsx
+  lib/
+    api/client.ts    typed fetch + Zod
+    offline/outbox.ts  Dexie queue
+    rbac.ts         role → routes
+  types/domain.ts  Shipment, Reading, Alert</pre>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

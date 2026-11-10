@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dispatcher live board</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+a{color:#0A6A94}a:hover{color:#074E6E}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0F1B2A; background: #F3F5F8; min-height: 1240px">
+
+  <header style="background: #0F1B2A; color: #FFFFFF">
+    <div style="max-width: 1440px; margin: 0 auto; padding: 0 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; min-height: 64px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#7FD3F5" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3v22M5 8.5l18 11M23 8.5l-18 11"/><path d="M11 5l3 3 3-3M11 23l3-3 3 3"/></svg>
+        <span style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em">ColdChain Pulse</span>
+      </div>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+        <a href="#" aria-current="page" style="color: #FFFFFF; text-decoration: none; padding: 8px 14px; border-radius: 8px; background: #22324A; font-weight: 600; font-size: 14px">Live board</a>
+        <a href="#" style="color: #C5D0DC; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px">Shipments</a>
+        <a href="#" style="color: #C5D0DC; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px">Alerts</a>
+        <a href="#" style="color: #C5D0DC; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px">Vehicles</a>
+        <a href="Audit.dc.html" style="color: #C5D0DC; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px">Reports</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 16px; font-size: 13px">
+        <span style="display: inline-flex; align-items: center; gap: 8px; color: #C5D0DC"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3DDC97"></span>Live · updated 4 s ago</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border-radius: 999px; background: #22324A"><span style="width: 28px; height: 28px; border-radius: 50%; background: #0A6A94; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">DP</span>Dispatcher</span>
+      </div>
+    </div>
+  </header>
+
+  <div role="alert" style="background: #B42318; color: #FFFFFF">
+    <div style="max-width: 1440px; margin: 0 auto; padding: 12px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>
+      <div style="flex: 1 1 420px; font-size: 15px; line-height: 1.4"><strong style="letter-spacing: 0.04em">CRITICAL</strong> · SHP-0142 at <strong>9.4 °C</strong> for 12 min — above the 8.0 °C limit · Truck DHK-11-2041 → Sreepur UHC</div>
+      <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #FFFFFF; color: #8F1D13; border: 0; border-radius: 8px; padding: 10px 16px; min-height: 44px; cursor: pointer">Acknowledge</button>
+      <a href="#detail" style="font-size: 14px; font-weight: 600; color: #FFFFFF; text-decoration: underline; padding: 10px 4px">View shipment</a>
+      <span style="font-size: 13px; color: #FFD9D4">+1 more critical</span>
+    </div>
+  </div>
+
+  <main style="max-width: 1440px; margin: 0 auto; padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 24px">
+
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em">Live board</h1>
+        <p style="margin: 6px 0 0; color: #4A5868; font-size: 14px">512 active shipments · sorted by alert severity</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+        <label style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 12px; min-height: 44px; min-width: 280px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A5868" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search shipments</span>
+          <input type="search" placeholder="Search batch, clinic, driver…" style="border: 0; outline: none; font: inherit; font-size: 14px; flex: 1; background: transparent; color: #0F1B2A">
+        </label>
+        <button type="button" style="font: inherit; font-size: 14px; font-weight: 500; background: #FFFFFF; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 14px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filters</button>
+        <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #0A6A94; color: #FFFFFF; border: 0; border-radius: 8px; padding: 0 18px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New shipment</button>
+      </div>
+    </div>
+
+    <section aria-label="Fleet summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px">
+      <div style="background: #B42318; color: #FFFFFF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v4"/></svg>CRITICAL</span>
+        <span style="font-size: 34px; font-weight: 700; font-family: 'JetBrains Mono', monospace">2</span>
+        <span style="font-size: 13px; color: #FFD9D4">Breach over 10 min</span>
+      </div>
+      <div style="background: #FFF5DB; border: 1px solid #F0C65A; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6B4500; display: flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B4500" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>WARNING</span>
+        <span style="font-size: 34px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #0F1B2A">7</span>
+        <span style="font-size: 13px; color: #6B4500">Near limit or breach &lt; 10 min</span>
+      </div>
+      <div style="background: #FFFFFF; border: 1px dashed #8995A3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">SENSOR STALE</span>
+        <span style="font-size: 34px; font-weight: 700; font-family: 'JetBrains Mono', monospace">3</span>
+        <span style="font-size: 13px; color: #4A5868">No reading for 90 s+</span>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">IN RANGE</span>
+        <span style="font-size: 34px; font-weight: 700; font-family: 'JetBrains Mono', monospace">500</span>
+        <span style="font-size: 13px; color: #4A5868">Of 512 active</span>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">DELIVERED TODAY</span>
+        <span style="font-size: 34px; font-weight: 700; font-family: 'JetBrains Mono', monospace">38</span>
+        <span style="font-size: 13px; color: #4A5868">All handoffs signed</span>
+      </div>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+      <section aria-label="Active shipments" style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; overflow: hidden">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 16px; border-bottom: 1px solid #DCE2E9">
+          <button type="button" style="font: inherit; font-size: 13px; font-weight: 600; border-radius: 999px; padding: 6px 14px; min-height: 36px; border: 1px solid #0F1B2A; background: #0F1B2A; color: #FFFFFF">All 512</button>
+          <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; border-radius: 999px; padding: 6px 14px; min-height: 36px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #0F1B2A">Critical 2</button>
+          <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; border-radius: 999px; padding: 6px 14px; min-height: 36px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #0F1B2A">Warning 7</button>
+          <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; border-radius: 999px; padding: 6px 14px; min-height: 36px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #0F1B2A">Stale 3</button>
+          <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; border-radius: 999px; padding: 6px 14px; min-height: 36px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #0F1B2A">In transit</button>
+        </div>
+        <div style="overflow-x: auto">
+          <table style="width: 100%; min-width: 880px; border-collapse: collapse; font-size: 14px">
+            <thead>
+              <tr style="background: #F7F9FB; color: #3D4B5C; text-align: left">
+                <th scope="col" style="padding: 10px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">STATUS</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">SHIPMENT</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">DESTINATION</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">DRIVER · VEHICLE</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-align: right">TEMP</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">LAST 30 MIN</th>
+                <th scope="col" style="padding: 10px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-align: right">ETA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="row" hint-placeholder-count="10">
+                <tr style="{{row.rowStyle}}">
+                  <td style="padding: 12px 16px; border-top: 1px solid #E6EAF0">
+                    <span style="{{row.badgeStyle}}">
+                      <sc-if value="{{row.isCrit}}" hint-placeholder-val="{{false}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/></svg></sc-if>
+                      <sc-if value="{{row.isWarn}}" hint-placeholder-val="{{false}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg></sc-if>
+                      <sc-if value="{{row.isOk}}" hint-placeholder-val="{{true}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></sc-if>
+                      <sc-if value="{{row.isStale}}" hint-placeholder-val="{{false}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M4 12h3M10 12h4M17 12h3"/></svg></sc-if>
+                      {{row.levelLabel}}
+                    </span>
+                    <div style="font-size: 12px; color: #4A5868; margin-top: 4px">{{row.note}}</div>
+                  </td>
+                  <td style="padding: 12px; border-top: 1px solid #E6EAF0"><a href="#detail" style="font-family: 'JetBrains Mono', monospace; font-weight: 600; text-decoration: none; color: #0F1B2A">{{row.id}}</a><div style="font-size: 12px; color: #4A5868; margin-top: 2px">{{row.product}}</div></td>
+                  <td style="padding: 12px; border-top: 1px solid #E6EAF0">{{row.clinic}}<div style="font-size: 12px; color: #4A5868; margin-top: 2px">{{row.district}}</div></td>
+                  <td style="padding: 12px; border-top: 1px solid #E6EAF0">{{row.driver}}<div style="font-size: 12px; color: #4A5868; margin-top: 2px; font-family: 'JetBrains Mono', monospace">{{row.vehicle}}</div></td>
+                  <td style="padding: 12px; border-top: 1px solid #E6EAF0; text-align: right"><span style="{{row.tempStyle}}">{{row.temp}}</span><div style="font-size: 12px; color: #4A5868; margin-top: 2px">range 2–8 °C</div></td>
+                  <td style="padding: 12px; border-top: 1px solid #E6EAF0">
+                    <svg width="96" height="28" viewBox="0 0 96 28" role="img" aria-label="{{row.sparkLabel}}"><line x1="0" y1="6" x2="96" y2="6" stroke="#C9D2DC" stroke-dasharray="2 3"/><line x1="0" y1="22" x2="96" y2="22" stroke="#C9D2DC" stroke-dasharray="2 3"/><path d="{{row.spark}}" fill="none" stroke="{{row.sparkColor}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </td>
+                  <td style="padding: 12px 16px; border-top: 1px solid #E6EAF0; text-align: right; font-family: 'JetBrains Mono', monospace">{{row.eta}}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px 16px; border-top: 1px solid #DCE2E9; font-size: 13px; color: #4A5868">
+          <span>Showing 10 of 512 · rows render as you scroll</span>
+          <span>Critical and Warning always pinned to top</span>
+        </div>
+      </section>
+
+      <aside id="detail" aria-label="Shipment detail" style="flex: 1 1 360px; max-width: 440px; min-width: 0; background: #FFFFFF; border: 2px solid #B42318; border-radius: 12px; overflow: hidden">
+        <div style="padding: 18px 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; border-bottom: 1px solid #DCE2E9">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 18px">SHP-0142</div>
+            <div style="font-size: 13px; color: #4A5868; margin-top: 4px">Batch BCG-2611-07 · Tejgaon CW → Sreepur UHC</div>
+          </div>
+          <button type="button" aria-label="Close detail" style="background: transparent; border: 1px solid #C9D2DC; border-radius: 8px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3D4B5C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+
+        <div style="padding: 18px 20px; display: flex; align-items: center; gap: 16px; background: #FDEDEB">
+          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 44px; color: #B42318; line-height: 1">9.4<span style="font-size: 22px"> °C</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px; font-size: 13px">
+            <span style="display: inline-flex; align-items: center; gap: 6px; background: #B42318; color: #FFFFFF; border-radius: 999px; padding: 3px 10px; font-weight: 600; font-size: 12px; align-self: flex-start">CRITICAL</span>
+            <span style="color: #8F1D13; font-weight: 600">Out of range for 12:04</span>
+            <span style="color: #4A5868">1.4 °C above max · humidity 61%</span>
+          </div>
+        </div>
+
+        <div style="padding: 16px 20px 8px">
+          <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C; margin-bottom: 8px">TEMPERATURE · LAST 60 MIN</div>
+          <svg width="100%" viewBox="0 0 360 170" role="img" aria-label="Temperature rose from 5 °C to 9.4 °C over the last hour, crossing 8 °C about 12 minutes ago">
+            <rect x="24" y="60" width="336" height="60" fill="#E5F3EC"/>
+            <rect x="234" y="20" width="126" height="120" fill="#FDEDEB"/>
+            <line x1="24" y1="60" x2="360" y2="60" stroke="#17694F" stroke-dasharray="4 4"/>
+            <line x1="24" y1="120" x2="360" y2="120" stroke="#17694F" stroke-dasharray="4 4"/>
+            <text x="0" y="64" font-size="10.5" fill="#3D4B5C" font-family="Inter, sans-serif">8°</text>
+            <text x="0" y="124" font-size="10.5" fill="#3D4B5C" font-family="Inter, sans-serif">2°</text>
+            <polyline points="24,89 52,87 80,90 108,86 136,82 164,76 192,69 220,64 248,57 276,53 304,50 332,48 360,46" fill="none" stroke="#0F1B2A" stroke-width="2.2" stroke-linejoin="round"/>
+            <circle cx="360" cy="46" r="4" fill="#B42318"/>
+            <text x="24" y="160" font-size="10.5" fill="#3D4B5C" font-family="Inter, sans-serif">10:00</text>
+            <text x="180" y="160" font-size="10.5" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="middle">10:30</text>
+            <text x="360" y="160" font-size="10.5" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="end">now</text>
+            <text x="240" y="34" font-size="10.5" fill="#8F1D13" font-family="Inter, sans-serif" font-weight="600">breach</text>
+          </svg>
+        </div>
+
+        <div style="padding: 8px 20px 16px">
+          <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C; margin-bottom: 10px">ALERTS</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+            <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span><strong style="color: #8F1D13">Critical</strong> · breach &gt; 10 min</span><span style="font-family: 'JetBrains Mono', monospace; color: #4A5868">10:51</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span><strong style="color: #6B4500">Warning</strong> · breach started</span><span style="font-family: 'JetBrains Mono', monospace; color: #4A5868">10:41</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span><strong style="color: #6B4500">Warning</strong> · within 0.5 °C of max</span><span style="font-family: 'JetBrains Mono', monospace; color: #4A5868">10:37</span></div>
+          </div>
+        </div>
+
+        <div style="padding: 16px 20px; border-top: 1px solid #DCE2E9">
+          <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C; margin-bottom: 12px">CHAIN OF CUSTODY</div>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 13px">
+            <li style="display: flex; gap: 12px"><span style="width: 24px; height: 24px; border-radius: 50%; background: #17694F; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span><strong>Pickup signed</strong> · 08:12 · Tejgaon CW<br><span style="color: #4A5868">QR + PIN verified · condition OK · 23.759, 90.392</span></span></li>
+            <li style="display: flex; gap: 12px"><span style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid #0A6A94; flex: none"></span><span><strong>In transit</strong> · 41 km to go<br><span style="color: #4A5868">ETA 11:48 · last GPS ping 20 s ago</span></span></li>
+            <li style="display: flex; gap: 12px"><span style="width: 24px; height: 24px; border-radius: 50%; border: 2px dashed #8995A3; flex: none"></span><span style="color: #4A5868"><strong style="color: #0F1B2A">Delivery</strong> · awaiting clinic sign-off<br>Will default to TEMP_SUSPECT</span></li>
+          </ol>
+        </div>
+
+        <div style="padding: 16px 20px; border-top: 1px solid #DCE2E9; display: flex; gap: 10px; flex-wrap: wrap">
+          <button type="button" style="flex: 1 1 140px; font: inherit; font-size: 14px; font-weight: 600; background: #B42318; color: #FFFFFF; border: 0; border-radius: 8px; min-height: 44px; cursor: pointer">Acknowledge alert</button>
+          <button type="button" style="flex: 1 1 120px; font: inherit; font-size: 14px; font-weight: 600; background: #FFFFFF; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; min-height: 44px; cursor: pointer">Call driver</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const badge = {
+      crit: 'display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#B42318;color:#FFFFFF;font-weight:600;font-size:12px;letter-spacing:0.03em',
+      warn: 'display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#F0A500;color:#0F1B2A;font-weight:600;font-size:12px;letter-spacing:0.03em',
+      ok: 'display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#E5F3EC;color:#17694F;font-weight:600;font-size:12px;letter-spacing:0.03em',
+      stale: 'display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;background:#EEF1F4;color:#3D4B5C;border:1px dashed #8995A3;font-weight:600;font-size:12px;letter-spacing:0.03em'
+    };
+    const temp = {
+      crit: "font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;color:#B42318",
+      warn: "font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;color:#7A4F00",
+      ok: "font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;color:#0F1B2A",
+      stale: "font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;color:#5B6878"
+    };
+    const rowBg = { crit: 'background:#FDEDEB', warn: 'background:#FFFBF0', ok: 'background:#FFFFFF', stale: 'background:#FFFFFF' };
+    const spark = {
+      up: 'M0 20 L12 19 L24 17 L36 14 L48 11 L60 8 L72 5 L84 3 L96 2',
+      down: 'M0 12 L12 14 L24 17 L36 20 L48 23 L60 25 L72 26 L84 26 L96 27',
+      warnUp: 'M0 16 L12 15 L24 13 L36 12 L48 11 L60 10 L72 9 L84 8 L96 8',
+      warnDown: 'M0 13 L12 14 L24 15 L36 17 L48 18 L60 19 L72 20 L84 20 L96 21',
+      flat: 'M0 14 L12 13 L24 15 L36 14 L48 13 L60 14 L72 15 L84 14 L96 14',
+      flat2: 'M0 15 L12 14 L24 14 L36 13 L48 14 L60 15 L72 14 L84 13 L96 14',
+      stale: 'M0 14 L12 13 L24 14 L36 15 L48 14'
+    };
+    const color = { crit: '#B42318', warn: '#B07A00', ok: '#17694F', stale: '#8995A3' };
+    const labels = { crit: 'CRITICAL', warn: 'WARNING', ok: 'NORMAL', stale: 'STALE' };
+    const mk = (id, product, clinic, district, driver, vehicle, t, eta, level, note, sp, sparkLabel, selected) => ({
+      id, product, clinic, district, driver, vehicle, temp: t, eta, note,
+      levelLabel: labels[level], badgeStyle: badge[level], tempStyle: temp[level],
+      rowStyle: selected ? rowBg[level] + ';box-shadow:inset 0 0 0 2px #0A6A94' : rowBg[level],
+      spark: spark[sp], sparkColor: color[level], sparkLabel,
+      isCrit: level === 'crit', isWarn: level === 'warn', isOk: level === 'ok', isStale: level === 'stale'
+    });
+    return {
+      rows: [
+        mk('SHP-0142', 'BCG vaccine', 'Sreepur UHC', 'Gazipur', 'M. Karim', 'DHK-11-2041', '9.4 °C', '11:48', 'crit', 'Above max · 12 min', 'up', 'Rising above 8 °C', true),
+        mk('SHP-0377', 'Insulin glargine', 'Kalihati UHC', 'Tangail', 'S. Akter', 'DHK-14-0918', '1.1 °C', '12:30', 'crit', 'Below min · 11 min', 'down', 'Falling below 2 °C', false),
+        mk('SHP-0218', 'Pentavalent', 'Mirzapur Clinic', 'Tangail', 'R. Hossain', 'DHK-12-3307', '7.7 °C', '11:15', 'warn', 'Near max', 'warnUp', 'Rising toward 8 °C', false),
+        mk('SHP-0409', 'MR vaccine', 'Gazipur Sadar', 'Gazipur', 'T. Islam', 'DHK-11-5520', '2.3 °C', '11:05', 'warn', 'Near min', 'warnDown', 'Falling toward 2 °C', false),
+        mk('SHP-0311', 'OPV', 'Kaliakair UHC', 'Gazipur', 'A. Rahman', 'DHK-15-1184', '5.2 °C', '12:10', 'stale', 'No data · 3 min', 'stale', 'Readings stopped 3 minutes ago', false),
+        mk('SHP-0090', 'Hepatitis B', 'Savar UHC', 'Dhaka', 'N. Sultana', 'DHK-13-7702', '4.8 °C', '10:58', 'ok', 'In range', 'flat', 'Stable around 5 °C', false),
+        mk('SHP-0126', 'TT vaccine', 'Dhamrai UHC', 'Dhaka', 'F. Ahmed', 'DHK-11-6013', '5.1 °C', '11:22', 'ok', 'In range', 'flat2', 'Stable around 5 °C', false),
+        mk('SHP-0204', 'BCG vaccine', 'Kapasia UHC', 'Gazipur', 'J. Uddin', 'DHK-12-4471', '4.4 °C', '11:40', 'ok', 'In range', 'flat', 'Stable around 4.5 °C', false),
+        mk('SHP-0255', 'PCV', 'Madhupur UHC', 'Tangail', 'H. Begum', 'DHK-14-2290', '5.6 °C', '12:55', 'ok', 'In range', 'flat2', 'Stable around 5.5 °C', false),
+        mk('SHP-0298', 'Rota vaccine', 'Manikganj Sadar', 'Manikganj', 'K. Mia', 'DHK-13-0841', '4.9 °C', '13:05', 'ok', 'In range', 'flat', 'Stable around 5 °C', false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

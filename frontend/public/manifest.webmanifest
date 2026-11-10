@@ -1,0 +1,9 @@
+{
+  "name": "ColdChain Pulse",
+  "short_name": "ColdChain",
+  "start_url": "/driver",
+  "display": "standalone",
+  "background_color": "#F3F5F8",
+  "theme_color": "#0A6A94",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

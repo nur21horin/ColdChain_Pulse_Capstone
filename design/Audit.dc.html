@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Auditor compliance portal</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+a{color:#0A6A94}a:hover{color:#074E6E}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0F1B2A; background: #F3F5F8; min-height: 1240px">
+
+  <header style="background: #0F1B2A; color: #FFFFFF">
+    <div style="max-width: 1440px; margin: 0 auto; padding: 0 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; min-height: 64px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#7FD3F5" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3v22M5 8.5l18 11M23 8.5l-18 11"/><path d="M11 5l3 3 3-3M11 23l3-3 3 3"/></svg>
+        <span style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em">ColdChain Pulse</span>
+        <span style="font-size: 12px; font-weight: 600; color: #0F1B2A; background: #7FD3F5; border-radius: 6px; padding: 2px 8px; margin-left: 4px">AUDIT</span>
+      </div>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+        <a href="#" aria-current="page" style="color: #FFFFFF; text-decoration: none; padding: 8px 14px; border-radius: 8px; background: #22324A; font-weight: 600; font-size: 14px">Batch reports</a>
+        <a href="#" style="color: #C5D0DC; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px">Shipments</a>
+        <a href="#" style="color: #C5D0DC; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px">Failed logins</a>
+      </nav>
+      <span style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; background: #22324A; font-size: 13px"><span style="width: 28px; height: 28px; border-radius: 50%; background: #3D4B5C; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px">EA</span>External Auditor · read-only</span>
+    </div>
+  </header>
+
+  <div style="background: #E3F1F8; border-bottom: 1px solid #B9DCEC">
+    <div style="max-width: 1440px; margin: 0 auto; padding: 10px 32px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #074E6E">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#074E6E" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+      Records on this portal are append-only. Nothing here can be edited or deleted — by anyone.
+    </div>
+  </div>
+
+  <main style="max-width: 1440px; margin: 0 auto; padding: 28px 32px 48px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+    <aside aria-label="Find a batch" style="flex: 1 1 300px; max-width: 340px; display: flex; flex-direction: column; gap: 16px">
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4B5C">Batch or shipment
+          <input type="search" value="BCG-2611" style="font: inherit; font-size: 14px; font-weight: 400; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 12px; min-height: 44px">
+        </label>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4B5C">From<input type="text" value="01 Nov 2026" style="font: inherit; font-size: 14px; font-weight: 400; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 10px; min-height: 44px; min-width: 0"></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4B5C">To<input type="text" value="10 Nov 2026" style="font: inherit; font-size: 14px; font-weight: 400; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 10px; min-height: 44px; min-width: 0"></label>
+        </div>
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 32px"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #0A6A94">Only batches with SLA breaches</label>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; overflow: hidden">
+        <div style="padding: 12px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C; border-bottom: 1px solid #DCE2E9">4 BATCHES</div>
+        <a href="#" style="display: block; text-decoration: none; color: #0F1B2A; padding: 14px 16px; background: #E3F1F8; box-shadow: inset 0 0 0 2px #0A6A94">
+          <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-weight: 600">SHP-0117</span><span style="font-size: 12px; font-weight: 600; color: #FFFFFF; background: #B42318; border-radius: 999px; padding: 2px 8px">1 critical</span></div>
+          <div style="font-size: 13px; color: #3D4B5C; margin-top: 4px">BCG-2611-03 · Kapasia UHC · 9 Nov</div>
+        </a>
+        <a href="#" style="display: block; text-decoration: none; color: #0F1B2A; padding: 14px 16px; border-top: 1px solid #E6EAF0">
+          <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-weight: 600">SHP-0098</span><span style="font-size: 12px; font-weight: 600; color: #0F1B2A; background: #F0A500; border-radius: 999px; padding: 2px 8px">2 warnings</span></div>
+          <div style="font-size: 13px; color: #3D4B5C; margin-top: 4px">BCG-2611-02 · Sreepur UHC · 7 Nov</div>
+        </a>
+        <a href="#" style="display: block; text-decoration: none; color: #0F1B2A; padding: 14px 16px; border-top: 1px solid #E6EAF0">
+          <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-weight: 600">SHP-0071</span><span style="font-size: 12px; font-weight: 600; color: #0F1B2A; background: #F0A500; border-radius: 999px; padding: 2px 8px">late delivery</span></div>
+          <div style="font-size: 13px; color: #3D4B5C; margin-top: 4px">BCG-2611-01 · Savar UHC · 4 Nov</div>
+        </a>
+        <a href="#" style="display: block; text-decoration: none; color: #0F1B2A; padding: 14px 16px; border-top: 1px solid #E6EAF0">
+          <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-weight: 600">SHP-0064</span><span style="font-size: 12px; font-weight: 600; color: #0F1B2A; background: #F0A500; border-radius: 999px; padding: 2px 8px">1 warning</span></div>
+          <div style="font-size: 13px; color: #3D4B5C; margin-top: 4px">BCG-2611-01 · Dhamrai UHC · 3 Nov</div>
+        </a>
+      </div>
+    </aside>
+
+    <section aria-label="Batch report" style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+        <div>
+          <p style="margin: 0 0 4px; font-size: 13px; color: #4A5868">Batch report</p>
+          <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em"><span style="font-family: 'JetBrains Mono', monospace">SHP-0117</span> · BCG-2611-03</h1>
+          <p style="margin: 6px 0 0; color: #4A5868; font-size: 14px">Tejgaon Central Warehouse → Kapasia UHC · Delivered 9 Nov 2026, 14:26 · Target 2–8 °C</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #FFFFFF; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 16px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download CSV</button>
+          <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #0A6A94; color: #FFFFFF; border: 0; border-radius: 8px; padding: 0 16px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download PDF</button>
+        </div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 18px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+        <span style="width: 44px; height: 44px; border-radius: 50%; background: #E5F3EC; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17694F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
+        <div style="flex: 1 1 320px">
+          <div style="font-weight: 700; font-size: 16px; color: #17694F">Hash chain intact — no record has been altered</div>
+          <div style="font-size: 13px; color: #4A5868; margin-top: 4px">Verified 10 Nov 2026, 09:58 · 761 records · final hash <span style="font-family: 'JetBrains Mono', monospace; color: #0F1B2A">9f2c71a0…be41a</span></div>
+        </div>
+        <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #FFFFFF; color: #0F1B2A; border: 1px solid #C9D2DC; border-radius: 8px; padding: 0 16px; min-height: 44px; cursor: pointer">Verify again</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+        <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 14px 16px"><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">IN TRANSIT</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; margin-top: 6px">6 h 14 m</div></div>
+        <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 14px 16px"><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">READINGS</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; margin-top: 6px">748</div></div>
+        <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 14px 16px"><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #3D4B5C">MIN / MAX</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; margin-top: 6px">3.9 / <span style="color: #B42318">9.1</span> °C</div></div>
+        <div style="background: #FDEDEB; border: 1px solid #F2B8B0; border-radius: 12px; padding: 14px 16px"><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #8F1D13">OUT OF RANGE</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; margin-top: 6px; color: #8F1D13">14 m</div></div>
+        <div style="background: #FDEDEB; border: 1px solid #F2B8B0; border-radius: 12px; padding: 14px 16px"><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #8F1D13">SLA BREACHES</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; margin-top: 6px; color: #8F1D13">1</div></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; padding: 18px 20px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 12px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700">One 14-minute excursion to 9.1 °C, at 11:20</h2>
+          <span style="font-size: 13px; color: #4A5868; display: inline-flex; gap: 16px"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 14px; height: 10px; background: #E5F3EC; border: 1px solid #17694F"></span>2–8 °C target</span><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 14px; height: 10px; background: #FDEDEB; border: 1px solid #B42318"></span>Critical episode</span></span>
+        </div>
+        <svg width="100%" viewBox="0 0 900 220" role="img" aria-label="Temperature over the 6-hour trip stayed between 3.9 and 7.5 °C except for one 14-minute rise to 9.1 °C at 11:20">
+          <rect x="40" y="60" width="850" height="96" fill="#E5F3EC"/>
+          <rect x="370" y="20" width="34" height="160" fill="#FDEDEB"/>
+          <line x1="40" y1="60" x2="890" y2="60" stroke="#17694F" stroke-dasharray="4 4"/>
+          <line x1="40" y1="156" x2="890" y2="156" stroke="#17694F" stroke-dasharray="4 4"/>
+          <line x1="40" y1="180" x2="890" y2="180" stroke="#C9D2DC"/>
+          <text x="30" y="64" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="end">8°</text>
+          <text x="30" y="160" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="end">2°</text>
+          <polyline points="40,108 80,112 120,104 160,110 200,100 240,106 280,98 320,90 350,76 370,58 380,44 392,42 404,58 420,78 450,92 490,100 530,96 570,104 610,110 650,106 690,112 730,118 770,114 810,108 850,112 890,110" fill="none" stroke="#0F1B2A" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="392" cy="42" r="4" fill="#B42318"/>
+          <text x="400" y="34" font-size="12" fill="#8F1D13" font-family="Inter, sans-serif" font-weight="600">9.1 °C peak</text>
+          <text x="40" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif">08:12</text>
+          <text x="182" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="middle">09:00</text>
+          <text x="318" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="middle">10:00</text>
+          <text x="454" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="middle">11:00</text>
+          <text x="590" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="middle">12:00</text>
+          <text x="726" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="middle">13:00</text>
+          <text x="890" y="202" font-size="12" fill="#3D4B5C" font-family="Inter, sans-serif" text-anchor="end">14:26</text>
+        </svg>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DCE2E9; border-radius: 12px; overflow: hidden">
+        <h2 style="margin: 0; padding: 16px 20px; font-size: 16px; font-weight: 700; border-bottom: 1px solid #DCE2E9">Custody & alert log</h2>
+        <div style="overflow-x: auto">
+          <table style="width: 100%; min-width: 820px; border-collapse: collapse; font-size: 14px">
+            <thead>
+              <tr style="background: #F7F9FB; color: #3D4B5C; text-align: left">
+                <th scope="col" style="padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">TIME</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">EVENT</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">BY</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">LOCATION</th>
+                <th scope="col" style="padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">CONDITION</th>
+                <th scope="col" style="padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em">HASH</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace">14:26</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><strong>Delivery signed</strong><div style="font-size: 12px; color: #4A5868">QR + driver PIN + receiver PIN</div></td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0">Clinic receiver · Kapasia UHC</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px">24.104, 90.571</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><span style="font-size: 12px; font-weight: 600; color: #6B4500; background: #FFF5DB; border: 1px solid #F0C65A; border-radius: 999px; padding: 2px 8px">TEMP_SUSPECT · accepted</span></td>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3D4B5C">9f2c…be41a</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace">11:34</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><strong>Alert acknowledged</strong><div style="font-size: 12px; color: #4A5868">"Door seal reset, reefer back to 5 °C"</div></td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0">Dispatcher</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; color: #4A5868">—</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; color: #4A5868">—</td>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3D4B5C">51d0…7a2c3</td>
+              </tr>
+              <tr style="background: #FDEDEB">
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace">11:30</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><strong style="color: #8F1D13">Critical alert</strong><div style="font-size: 12px; color: #4A5868">Out of range 10 min+ · peak 9.1 °C</div></td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0">Alert engine</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px">23.981, 90.493</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; color: #4A5868">—</td>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3D4B5C">c3e8…0f914</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace">11:20</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><strong style="color: #6B4500">Warning</strong><div style="font-size: 12px; color: #4A5868">Breach started · 8.3 °C</div></td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0">Alert engine</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px">23.962, 90.471</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; color: #4A5868">—</td>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3D4B5C">77ab…31d0e</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace">08:12</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><strong>Pickup signed</strong><div style="font-size: 12px; color: #4A5868">QR + driver PIN · synced 08:31 (was offline)</div></td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0">Driver · DHK-12-4471</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px">23.759, 90.392</td>
+                <td style="padding: 12px; border-top: 1px solid #E6EAF0"><span style="font-size: 12px; font-weight: 600; color: #17694F; background: #E5F3EC; border-radius: 999px; padding: 2px 8px">OK</span></td>
+                <td style="padding: 12px 20px; border-top: 1px solid #E6EAF0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3D4B5C">0b6f…e2a90</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding: 12px 20px; border-top: 1px solid #DCE2E9; font-size: 13px; color: #4A5868">Newest first · 748 temperature readings are in the CSV and PDF exports</div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

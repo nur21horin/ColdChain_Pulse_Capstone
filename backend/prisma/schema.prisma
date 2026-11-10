@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DISPATCHER
+  DRIVER
+  CLINIC_RECEIVER
+  EXTERNAL_AUDITOR
+}
+
+enum ShipmentStatus {
+  PENDING
+  IN_TRANSIT
+  DELIVERED
+  COMPROMISED
+  CANCELLED
+}
+
+enum AlertSeverity {
+  WARNING
+  CRITICAL
+}
+
+enum AlertType {
+  TEMP_HIGH_WARNING
+  TEMP_LOW_WARNING
+  TEMP_BREACH_CRITICAL
+  HUMIDITY_WARNING
+  HUMIDITY_CRITICAL
+  SENSOR_OFFLINE
+}
+
+enum CustodyStage {
+  PICKUP
+  IN_TRANSIT_CHECKPOINT
+  DELIVERY
+}
+
+enum ConditionStatus {
+  SEALED_INTACT
+  DAMAGED
+  TEMP_COMPROMISED
+  LABEL_DAMAGED
+}
+
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  passwordHash     String
+  name             String
+  role             Role              @default(DRIVER)
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  dispatchedShipments Shipment[]     @relation("DispatcherShipments")
+  drivenShipments     Shipment[]     @relation("DriverShipments")
+  receivedShipments   Shipment[]     @relation("ReceiverShipments")
+  custodyActions      ChainOfCustody[]
+  alertsAcknowledged  Alert[]        @relation("AcknowledgedAlerts")
+  auditReports        AuditReport[]
+
+  @@map("users")
+}
+
+model FailedLoginLog {
+  id           String   @id @default(uuid())
+  email        String
+  ipAddress    String?
+  userAgent    String?
+  reason       String
+  attemptedAt  DateTime @default(now())
+
+  @@index([email])
+  @@index([attemptedAt])
+  @@map("failed_login_logs")
+}
+
+model Shipment {
+  id                 String             @id @default(uuid())
+  trackingNumber     String             @unique
+  origin             String
+  destination        String
+  vehicleId          String?
+  dispatcherId       String?
+  driverId           String?
+  receiverId         String?
+  minTemp            Float              @default(2.0)
+  maxTemp            Float              @default(8.0)
+  minHumidity        Float?             @default(30.0)
+  maxHumidity        Float?             @default(65.0)
+  status             ShipmentStatus     @default(PENDING)
+  distanceKm         Float?
+  eta                DateTime?
+  dispatchedAt       DateTime?
+  deliveredAt        DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  dispatcher         User?              @relation("DispatcherShipments", fields: [dispatcherId], references: [id])
+  driver             User?              @relation("DriverShipments", fields: [driverId], references: [id])
+  receiver           User?              @relation("ReceiverShipments", fields: [receiverId], references: [id])
+  telemetryReadings  TelemetryReading[]
+  alerts             Alert[]
+  custodyRecords     ChainOfCustody[]
+  auditReports       AuditReport[]
+
+  @@index([trackingNumber])
+  @@index([status])
+  @@map("shipments")
+}
+
+// Append-only telemetry log with SHA-256 hash chaining
+model TelemetryReading {
+  id               String    @id // client-generated UUID for offline idempotency
+  shipmentId       String
+  temperature      Float
+  humidity         Float
+  batteryLevel     Float?
+  latitude         Float
+  longitude        Float
+  recordedAt       DateTime
+  receivedAt       DateTime  @default(now())
+  prevHash         String    // Hash of preceding record in the chain
+  hash             String    // SHA-256 of current reading + prevHash
+  isWarning        Boolean   @default(false)
+  isCritical       Boolean   @default(false)
+  details          String?
+
+  shipment         Shipment  @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  alerts           Alert[]
+
+  @@index([shipmentId, recordedAt])
+  @@index([hash])
+  @@map("telemetry_readings")
+}
+
+model Alert {
+  id                    String            @id @default(uuid())
+  shipmentId            String
+  readingId             String?
+  severity              AlertSeverity
+  type                  AlertType
+  message               String
+  breachDurationMinutes Float             @default(0)
+  triggeredAt           DateTime          @default(now())
+  resolvedAt            DateTime?
+  acknowledgedById      String?
+
+  shipment              Shipment          @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  reading               TelemetryReading? @relation(fields: [readingId], references: [id])
+  acknowledgedBy        User?             @relation("AcknowledgedAlerts", fields: [acknowledgedById], references: [id])
+
+  @@index([shipmentId, severity])
+  @@index([triggeredAt])
+  @@map("alerts")
+}
+
+// Append-only chain-of-custody log with QR/PIN/Signature and hash chaining
+model ChainOfCustody {
+  id              String          @id // client-generated UUID for offline idempotency
+  shipmentId      String
+  stage           CustodyStage
+  actorId         String
+  actorRole       Role
+  qrCodeData      String?
+  pinCode         String?
+  signature       String?
+  conditionStatus ConditionStatus @default(SEALED_INTACT)
+  notes           String?
+  latitude        Float?
+  longitude       Float?
+  recordedAt      DateTime
+  receivedAt      DateTime        @default(now())
+  prevHash        String          // Hash of preceding custody record
+  hash            String          // SHA-256 of current record + prevHash
+  supersedesId    String?         // References old record if this is a correction
+
+  shipment        Shipment        @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  actor           User            @relation(fields: [actorId], references: [id])
+
+  @@index([shipmentId, recordedAt])
+  @@index([hash])
+  @@map("chain_of_custody")
+}
+
+model AuditReport {
+  id              String          @id @default(uuid())
+  shipmentId      String
+  generatedById   String
+  reportType      String          @default("PDF") // PDF or CSV
+  sha256Hash      String          // Tamper-evident cryptographic fingerprint
+  dataSummaryJson String
+  generatedAt     DateTime        @default(now())
+
+  shipment        Shipment        @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  generatedBy     User            @relation(fields: [generatedById], references: [id])
+
+  @@index([shipmentId])
+  @@index([sha256Hash])
+  @@map("audit_reports")
+}

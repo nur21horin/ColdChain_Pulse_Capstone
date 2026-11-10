@@ -1,0 +1,199 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ColdChain Pulse Backend API",
+    "version": "1.0.0",
+    "description": "Comprehensive REST API specification for ColdChain Pulse - MedSwift Logistics Ltd. Features JWT Auth & RBAC (Admin, Dispatcher, Driver, Clinic Receiver, External Auditor), Tamper-evident SHA-256 Hash Chaining, IoT Telemetry Ingestion, 10-Minute Breach Alert Engine, Append-Only Chain of Custody, and Offline Sync Support.",
+    "contact": {
+      "name": "Backend & Data Engineering Team",
+      "email": "backend@medswift.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Development Server"
+    },
+    {
+      "url": "https://coldchain-pulse-backend.vercel.app",
+      "description": "Production Vercel Deployment"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your signed JWT token"
+      }
+    },
+    "schemas": {
+      "Role": {
+        "type": "string",
+        "enum": ["ADMIN", "DISPATCHER", "DRIVER", "CLINIC_RECEIVER", "EXTERNAL_AUDITOR"]
+      },
+      "ShipmentStatus": {
+        "type": "string",
+        "enum": ["PENDING", "IN_TRANSIT", "DELIVERED", "COMPROMISED", "CANCELLED"]
+      },
+      "AlertSeverity": {
+        "type": "string",
+        "enum": ["WARNING", "CRITICAL"]
+      },
+      "CustodyStage": {
+        "type": "string",
+        "enum": ["PICKUP", "IN_TRANSIT_CHECKPOINT", "DELIVERY"]
+      },
+      "ConditionStatus": {
+        "type": "string",
+        "enum": ["SEALED_INTACT", "DAMAGED", "TEMP_COMPROMISED", "LABEL_DAMAGED"]
+      },
+      "Shipment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "trackingNumber": { "type": "string", "example": "MED-20261110-4102" },
+          "origin": { "type": "string", "example": "Central Warehouse Dhaka" },
+          "destination": { "type": "string", "example": "Apex Clinic Chittagong" },
+          "vehicleId": { "type": "string", "example": "VAN-04" },
+          "driverId": { "type": "string", "format": "uuid" },
+          "minTemp": { "type": "number", "example": 2.0 },
+          "maxTemp": { "type": "number", "example": 8.0 },
+          "status": { "$ref": "#/components/schemas/ShipmentStatus" },
+          "eta": { "type": "string", "format": "date-time" }
+        }
+      },
+      "TelemetryReading": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "shipmentId": { "type": "string" },
+          "temperature": { "type": "number", "example": 4.5 },
+          "humidity": { "type": "number", "example": 52.0 },
+          "latitude": { "type": "number", "example": 23.8103 },
+          "longitude": { "type": "number", "example": 90.4125 },
+          "recordedAt": { "type": "string", "format": "date-time" },
+          "prevHash": { "type": "string" },
+          "hash": { "type": "string" },
+          "isWarning": { "type": "boolean" },
+          "isCritical": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "Register a new user account",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password", "name"],
+                "properties": {
+                  "email": { "type": "string", "format": "email", "example": "driver1@medswift.com" },
+                  "password": { "type": "string", "example": "StrongPass123!" },
+                  "name": { "type": "string", "example": "Yeamin Driver" },
+                  "role": { "$ref": "#/components/schemas/Role" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User successfully registered" }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "Login with credentials to obtain JWT bearer token",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "example": "admin@medswift.com" },
+                  "password": { "type": "string", "example": "AdminPass123!" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully authenticated with JWT token" },
+          "401": { "description": "Invalid credentials; attempt logged to security audit" }
+        }
+      }
+    },
+    "/api/v1/shipments": {
+      "get": {
+        "summary": "List shipments (All roles)",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Shipments"],
+        "responses": { "200": { "description": "List of shipments" } }
+      },
+      "post": {
+        "summary": "Create new shipment with thresholds and ETA (Admin, Dispatcher)",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Shipments"],
+        "responses": { "201": { "description": "Shipment created" } }
+      }
+    },
+    "/api/v1/telemetry/ingest": {
+      "post": {
+        "summary": "Ingest real-time IoT reading with SHA-256 hash chaining and 10-min breach check",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Telemetry & Alerts"],
+        "responses": { "201": { "description": "Reading recorded" } }
+      }
+    },
+    "/api/v1/custody/handoff": {
+      "post": {
+        "summary": "Record tamper-evident handoff (QR, PIN, Signature)",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Chain of Custody"],
+        "responses": { "201": { "description": "Handoff recorded" } }
+      }
+    },
+    "/api/v1/sync/telemetry/batch": {
+      "post": {
+        "summary": "Idempotent batch upload of offline-queued telemetry readings",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Offline Sync"],
+        "responses": { "200": { "description": "Batch processed idempotently" } }
+      }
+    },
+    "/api/v1/audit/shipments/{id}/verify-ledger": {
+      "get": {
+        "summary": "Cryptographically verify hash chain integrity of shipment ledger",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Audit & Reports"],
+        "responses": { "200": { "description": "Verification result" } }
+      }
+    },
+    "/api/v1/audit/reports/{shipmentId}/pdf": {
+      "get": {
+        "summary": "Generate and download tamper-evident PDF audit report with SHA-256 batch hash",
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Audit & Reports"],
+        "responses": { "200": { "description": "PDF Document" } }
+      }
+    },
+    "/api/v1/live/stream": {
+      "get": {
+        "summary": "Server-Sent Events (SSE) stream for live telemetry and alerts",
+        "tags": ["Live Stream"],
+        "responses": { "200": { "description": "SSE Stream" } }
+      }
+    }
+  }
+}

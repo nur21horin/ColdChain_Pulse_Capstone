@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "ColdChain Pulse - MedSwift Logistics API",
+    "description": "Complete Postman collection for ColdChain Pulse backend. Includes Auth, RBAC test users for all 5 roles, IoT Telemetry Ingestion, Alert Engine, Append-Only Chain of Custody, Offline Sync Idempotency, and Tamper-Evident Audit Ledger Verification.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "token", "value": "" },
+    { "key": "demoShipmentId", "value": "shipment-medswift-demo-01" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login as Admin",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@medswift.com\",\n  \"password\": \"AdminPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login as Dispatcher",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dispatcher@medswift.com\",\n  \"password\": \"DispatchPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login as Driver",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"driver@medswift.com\",\n  \"password\": \"DriverPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login as Clinic Receiver",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"receiver@medswift.com\",\n  \"password\": \"ReceiverPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login as External Auditor",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"auditor@medswift.com\",\n  \"password\": \"AuditorPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Test Failed Login (Audit Log Test)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"intruder@unknown.com\",\n  \"password\": \"WrongPassword!\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Shipments & Dispatch",
+      "item": [
+        {
+          "name": "Create Shipment (Admin/Dispatcher)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/shipments",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"origin\": \"Warehouse Dhaka-South\",\n  \"destination\": \"Sylhet Medical College Clinic\",\n  \"vehicleId\": \"MED-VAN-12\",\n  \"minTemp\": 2.0,\n  \"maxTemp\": 8.0,\n  \"distanceKm\": 235\n}"
+            }
+          }
+        },
+        {
+          "name": "List All Shipments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/shipments",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get Shipment By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/shipments/{{demoShipmentId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. IoT Telemetry & Alert Engine",
+      "item": [
+        {
+          "name": "Ingest Telemetry Reading (Normal: 4.5°C)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/telemetry/ingest",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipmentId\": \"{{demoShipmentId}}\",\n  \"temperature\": 4.5,\n  \"humidity\": 48.0,\n  \"batteryLevel\": 95.0,\n  \"latitude\": 23.8103,\n  \"longitude\": 90.4125\n}"
+            }
+          }
+        },
+        {
+          "name": "Ingest Approaching Warning Reading (7.8°C)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/telemetry/ingest",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipmentId\": \"{{demoShipmentId}}\",\n  \"temperature\": 7.8,\n  \"humidity\": 50.0,\n  \"latitude\": 23.8200,\n  \"longitude\": 90.4200\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Shipment Telemetry Readings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/telemetry/{{demoShipmentId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get Alerts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/telemetry/alerts",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Chain of Custody",
+      "item": [
+        {
+          "name": "Record Pickup Handoff (QR Code)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/custody/handoff",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipmentId\": \"{{demoShipmentId}}\",\n  \"stage\": \"PICKUP\",\n  \"conditionStatus\": \"SEALED_INTACT\",\n  \"qrCodeData\": \"QR-MED-DHAKA-CENTRAL-01\",\n  \"pinCode\": \"7842\",\n  \"notes\": \"Inspected seal, unbroken and cooling unit active.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Record Delivery Handoff (Signature + PIN)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/custody/handoff",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipmentId\": \"{{demoShipmentId}}\",\n  \"stage\": \"DELIVERY\",\n  \"conditionStatus\": \"SEALED_INTACT\",\n  \"pinCode\": \"9912\",\n  \"signature\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=\",\n  \"notes\": \"Received by Dr. Saif at Chittagong Clinic. Temperature verified 4.1C.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Chain of Custody History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/custody/{{demoShipmentId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Offline Sync",
+      "item": [
+        {
+          "name": "Sync Batched Telemetry (Idempotent)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sync/telemetry/batch",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"batch\": [\n    {\n      \"id\": \"c0a80101-0000-0000-0000-000000000001\",\n      \"shipmentId\": \"{{demoShipmentId}}\",\n      \"temperature\": 4.1,\n      \"humidity\": 47.0,\n      \"latitude\": 23.5100,\n      \"longitude\": 90.6200,\n      \"recordedAt\": \"2026-11-10T10:00:00.000Z\"\n    },\n    {\n      \"id\": \"c0a80101-0000-0000-0000-000000000002\",\n      \"shipmentId\": \"{{demoShipmentId}}\",\n      \"temperature\": 4.3,\n      \"humidity\": 48.0,\n      \"latitude\": 23.4900,\n      \"longitude\": 90.7100,\n      \"recordedAt\": \"2026-11-10T10:00:30.000Z\"\n    }\n  ]\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Audit & Reports",
+      "item": [
+        {
+          "name": "Verify Cryptographic Ledger (Auditor)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/audit/shipments/{{demoShipmentId}}/verify-ledger",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Download PDF Tamper-Evident Report",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/audit/reports/{{demoShipmentId}}/pdf",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Download CSV Telemetry Export",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/audit/reports/{{demoShipmentId}}/csv",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get Failed Login Security Logs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/audit/failed-logins",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    }
+  ]
+}
